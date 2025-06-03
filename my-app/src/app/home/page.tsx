@@ -12,8 +12,6 @@ interface Movie {
 
 const HomePage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [activeUser, setActiveUser] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,9 +35,7 @@ const HomePage = () => {
         const data = await res.json();
         setMovies(data.results);
       } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching movies:', err.message);
       }
     };
 
@@ -52,13 +48,26 @@ const HomePage = () => {
     }
   }, []);
 
-  return (
-    <div className="container mt-4">
+    return (
+    <div className="container mt-4 bg-light">
       <h1 className="mb-4">Catálogo de Películas Populares</h1>
-      
-      <div key={movie.id} className="col-md-3 mb-4">
-
-
+      <div className="row">
+        {movies.map((movie) => (
+          <div key={movie.id} className="col-6 col-md-3 mb-4">
+            <div className="card h-100">
+              {movie.poster_path ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                  className="card-img-top"
+                  style={{ height: '300px', objectFit: 'cover' }}
+                />
+              ) : (
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
