@@ -1,5 +1,4 @@
-// app/layout.tsx
-import 'bootstrap/dist/css/bootstrap.min.css'; // ✅ Import global
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './componentes/Header';
 
 export const metadata = {
