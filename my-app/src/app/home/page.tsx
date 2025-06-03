@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
+
 interface Movie {
   id: number;
   title: string;
@@ -12,13 +13,15 @@ interface Movie {
 
 const HomePage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeUser, setActiveUser] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const res = await fetch(
-          'https://api.themoviedb.org/3/movie/popular?language=es-ES&page=2',
+          'https://api.themoviedb.org/3/movie/popular?language=es-ES&page=3',
           {
             headers: {
               Authorization:
@@ -35,7 +38,9 @@ const HomePage = () => {
         const data = await res.json();
         setMovies(data.results);
       } catch (err: any) {
-        console.error('Error fetching movies:', err.message);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -48,29 +53,33 @@ const HomePage = () => {
     }
   }, []);
 
+  const handleAddMovie = (movie: Movie) => {
+    if (!activeUser) return;
+    const stored = localStorage.getItem(`favMovies_${activeUser}`);
+    const favs: Movie[] = stored ? JSON.parse(stored) : [];
+    const exists = favs.some((m) => m.id === movie.id);
+    if (!exists) {
+      favs.push(movie);
+      localStorage.setItem(`favMovies_${activeUser}`, JSON.stringify(favs));
+      alert('Película añadida a tu perfil');
+    } else {
+      alert('Ya has añadido esta película.');
+    }
+  };
+
+  if (loading)
+    return <p className="text-center mt-5">Cargando películas...</p>;
+  if (error)
     return (
-    <div className="mt-4 bg-dark">
+      <p className="text-center mt-5 text-danger">
+        Error: {error}
+      </p>
+    );
+
+  return (
+    <div className="container mt-4">
       <h1 className="mb-4">Catálogo de Películas Populares</h1>
-      <div className="row">
-        {movies.map((movie) => (
-          <div key={movie.id} className="col-6 col-md-3 mb-4">
-            <div className="card h-100">
-              {movie.poster_path ? (
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  className="card-img-top"
-                  style={{ height: '300px', objectFit: 'cover' }}
-                />
-              ) : (
-                <div
-                  className="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center"
-                  style={{ height: '100px' }}></div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+      
     </div>
   );
 };
