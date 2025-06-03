@@ -20,7 +20,7 @@ const HomePage = () => {
     const fetchMovies = async () => {
       try {
         const res = await fetch(
-          'https://api.themoviedb.org/3/movie/popular?language=es-ES&page=3',
+          'https://api.themoviedb.org/3/movie/popular?language=es-ES&page=1',
           {
             headers: {
               Authorization:
@@ -52,33 +52,13 @@ const HomePage = () => {
     }
   }, []);
 
-  const handleAddMovie = (movie: Movie) => {
-    if (!activeUser) return;
-    const stored = localStorage.getItem(`favMovies_${activeUser}`);
-    const favs: Movie[] = stored ? JSON.parse(stored) : [];
-    const exists = favs.some((m) => m.id === movie.id);
-    if (!exists) {
-      favs.push(movie);
-      localStorage.setItem(`favMovies_${activeUser}`, JSON.stringify(favs));
-      alert('Película añadida a tu perfil');
-    } else {
-      alert('Ya has añadido esta película.');
-    }
-  };
-
-  if (loading)
-    return <p className="text-center mt-5">Cargando películas...</p>;
-  if (error)
-    return (
-      <p className="text-center mt-5 text-danger">
-        Error: {error}
-      </p>
-    );
-
   return (
     <div className="container mt-4">
       <h1 className="mb-4">Catálogo de Películas Populares</h1>
       
+      <div key={movie.id} className="col-md-3 mb-4">
+
+
     </div>
   );
 };
