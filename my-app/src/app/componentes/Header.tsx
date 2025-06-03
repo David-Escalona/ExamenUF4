@@ -30,7 +30,7 @@ const Header = () => {
                 >
                   Home 
                 </Link>
-                <li className=" p-0"></li>
+                <li className="list-group-item p-0"></li>
                 <Link
                   href="/movieexplorer"
                   className="d-block px-3 py-2 text-dark text-decoration-none"

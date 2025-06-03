@@ -1,7 +1,6 @@
 'use client';
 
-import React from "react";
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Movie {
   id: number;
@@ -13,15 +12,13 @@ interface Movie {
 
 const MovieExplorer = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [activeUser, setActiveUser] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const res = await fetch(
-          'https://api.themoviedb.org/3/movie/popular?language=es-ES&page=3',
+          'https://api.themoviedb.org/3/movie/popular?language=es-ES&page=1',
           {
             headers: {
               Authorization:
@@ -38,9 +35,7 @@ const MovieExplorer = () => {
         const data = await res.json();
         setMovies(data.results);
       } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching movies:', err.message);
       }
     };
 
@@ -53,10 +48,29 @@ const MovieExplorer = () => {
     }
   }, []);
 
-  return (
-    <div className="container mt-4">
+    return (
+    <div className="mt-4 bg-dark">
       <h1 className="mb-4">Catálogo de Películas Populares</h1>
-      
+      <div className="row">
+        {movies.map((movie) => (
+          <div key={movie.id} className="col-6 col-md-3 mb-4">
+            <div className="card h-100">
+              {movie.poster_path ? (
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                  className="card-img-top"
+                  style={{ height: '300px', objectFit: 'cover' }}
+                />
+              ) : (
+                <div
+                  className="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center"
+                  style={{ height: '100px' }}></div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

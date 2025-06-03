@@ -49,7 +49,7 @@ const HomePage = () => {
   }, []);
 
     return (
-    <div className="container mt-4 bg-light">
+    <div className="container mt-4">
       <h1 className="mb-4">Catálogo de Películas Populares</h1>
       <div className="row">
         {movies.map((movie) => (
@@ -63,6 +63,9 @@ const HomePage = () => {
                   style={{ height: '300px', objectFit: 'cover' }}
                 />
               ) : (
+                <div
+                  className="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center"
+                  style={{ height: '100px' }}></div>
               )}
             </div>
           </div>
