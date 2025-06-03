@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface Movie {
   id: number;
@@ -48,7 +49,7 @@ const MovieExplorer = () => {
     }
   }, []);
 
-    return (
+  return (
     <div className="mt-4 bg-dark">
       <h1 className="mb-4">Catálogo de Películas Populares</h1>
       <div className="row">
@@ -56,12 +57,14 @@ const MovieExplorer = () => {
           <div key={movie.id} className="col-6 col-md-3 mb-4">
             <div className="card h-100">
               {movie.poster_path ? (
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  className="card-img-top"
-                  style={{ height: '300px', objectFit: 'cover' }}
-                />
+                <Link href={`/detalle`}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    alt={movie.title}
+                    className="card-img-top"
+                    style={{ height: '300px', objectFit: 'cover', cursor: 'pointer' }}
+                  />
+                </Link>
               ) : (
                 <div
                   className="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center"
