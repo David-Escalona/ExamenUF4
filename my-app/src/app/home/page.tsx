@@ -18,7 +18,7 @@ const HomePage = () => {
     const fetchMovies = async () => {
       try {
         const res = await fetch(
-          'https://api.themoviedb.org/3/movie/popular?language=es-ES&page=1',
+          'https://api.themoviedb.org/3/movie/popular?language=es-ES&page=2',
           {
             headers: {
               Authorization:
@@ -49,7 +49,7 @@ const HomePage = () => {
   }, []);
 
     return (
-    <div className="container mt-4">
+    <div className="mt-4 bg-dark">
       <h1 className="mb-4">Catálogo de Películas Populares</h1>
       <div className="row">
         {movies.map((movie) => (
